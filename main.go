@@ -1,18 +1,24 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/OpenDataTelemetry/timeseries-api/controller"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
 	r := gin.Default() // Create a new gin router instance
-	api := r.Group("/api/timeseries/v0.1/smartcampusmaua/SmartLights")
+	api := r.Group("/api/timeseries/v0.2/smartcampusmaua")
 	{
-		api.GET("", controller.GetSmartLights)
-		api.GET("deviceName/:nodename", controller.GetSmartLightbyNodeName)
-		api.GET("deviceId/:devEUI", controller.GetSmartLightbyDevEUI)
+		api.GET("SmartLights", controller.GetSmartLights)
+		api.GET("SmartLights/deviceName/:nodename", controller.GetSmartLightbyNodeName)
+		api.GET("SmartLights/deviceId/:devEUI", controller.GetSmartLightbyDevEUI)
+		api.GET("WaterTankLevel", controller.GetWaterTankLevel)
+		api.GET("WaterTankLevel/deviceName/:nodename", controller.GetWaterTankLevelbyNodeName)
+		api.GET("WaterTankLevel/deviceId/:devEUI", controller.GetWaterTankLevelbyDevEUI)
+		api.GET("Hidrometer", controller.GetHidrometer)
+		api.GET("Hidrometer/deviceName/:nodename", controller.GetHidrometerbyNodeName)
+		api.GET("Hidrometer/deviceId/:devEUI", controller.GetHidrometerbyDevEUI)
 	}
 
 	r.Run(":8888")

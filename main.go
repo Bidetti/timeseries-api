@@ -19,6 +19,9 @@ func main() {
 		api.GET("Hidrometer", controller.GetHidrometer)
 		api.GET("Hidrometer/deviceName/:nodename", controller.GetHidrometerbyNodeName)
 		api.GET("Hidrometer/deviceId/:devEUI", controller.GetHidrometerbyDevEUI)
+		api.GET("ArtesianWell", controller.GetArtesianWell)
+		api.GET("ArtesianWell/deviceName/:nodename", controller.GetArtesianWellbyNodeName)
+		api.GET("ArtesianWell/deviceId/:devEUI", controller.GetArtesianWellbyDevEUI)
 	}
 
 	r.Run(":8888")

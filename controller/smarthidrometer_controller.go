@@ -63,7 +63,7 @@ func GetHidrometer(c *gin.Context) {
 				"rxInfo_longitude_1":           value["rxInfo_longitude_1"],
 				"rxInfo_rssi_0":                value["rxInfo_rssi_0"],
 				"rxInfo_rssi_1":                value["rxInfo_rssi_1"],
-				"rxInfo_dataRate_spreadFactor": value["rxInfo_dataRate_spreadFactor"],
+				"txInfo_dataRate_spreadFactor": value["txInfo_dataRate_spreadFactor"],
 				"txInfo_frequency":             value["txInfo_frequency"],
 			},
 			"name": "Hidrometer",
@@ -119,12 +119,12 @@ func GetHidrometerbyNodeName(c *gin.Context) {
 
 	defer influxDB.Close()
 
-	query := fmt.Sprintf(`
+	query := `
 		SELECT *
 		FROM "Hidrometer"
-		WHERE "nodeName" = '%s' AND "time" >= now() - interval '%s' minutes
+		WHERE "nodeName" = '` + nodeName + `' AND "time" >= now() - interval '` + intervalStr + ` minutes'
 		ORDER BY time DESC;
-	`, nodeName, intervalStr)
+	`
 
 	iterator, err := influxDB.Query(context.Background(), query)
 	if err != nil {
@@ -149,7 +149,7 @@ func GetHidrometerbyNodeName(c *gin.Context) {
 				"rxInfo_longitude_1":           value["rxInfo_longitude_1"],
 				"rxInfo_rssi_0":                value["rxInfo_rssi_0"],
 				"rxInfo_rssi_1":                value["rxInfo_rssi_1"],
-				"rxInfo_dataRate_spreadFactor": value["rxInfo_dataRate_spreadFactor"],
+				"txInfo_dataRate_spreadFactor": value["txInfo_dataRate_spreadFactor"],
 				"txInfo_frequency":             value["txInfo_frequency"],
 			},
 			"name": "Hidrometer",
@@ -205,12 +205,12 @@ func GetHidrometerbyDevEUI(c *gin.Context) {
 
 	defer influxDB.Close()
 
-	query := fmt.Sprintf(`
+	query := `
 		SELECT *
 		FROM "Hidrometer"
-		WHERE "devEUI" = '%s' AND "time" >= now() - interval '%s' minutes
+		WHERE "devEUI" = '` + devEUI + `' AND "time" >= now() - interval '` + intervalStr + ` minutes'
 		ORDER BY time DESC;
-	`, devEUI, intervalStr)
+	`
 
 	iterator, err := influxDB.Query(context.Background(), query)
 	if err != nil {
@@ -235,7 +235,7 @@ func GetHidrometerbyDevEUI(c *gin.Context) {
 				"rxInfo_longitude_1":           value["rxInfo_longitude_1"],
 				"rxInfo_rssi_0":                value["rxInfo_rssi_0"],
 				"rxInfo_rssi_1":                value["rxInfo_rssi_1"],
-				"rxInfo_dataRate_spreadFactor": value["rxInfo_dataRate_spreadFactor"],
+				"txInfo_dataRate_spreadFactor": value["txInfo_dataRate_spreadFactor"],
 				"txInfo_frequency":             value["txInfo_frequency"],
 			},
 			"name": "Hidrometer",

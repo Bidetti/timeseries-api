@@ -33,12 +33,12 @@ func GetWaterTankLevel(c *gin.Context) {
 
 	defer influxDB.Close()
 
-	query := fmt.Sprintf(`
+	query := `
 		SELECT *
 		FROM "WaterTankLavel"
-		WHERE "time" >= now() - interval '%s' minute
+		WHERE "time" >= now() - interval '` + intervalStr + ` minutes'
 		ORDER BY time DESC;
-	`, intervalStr)
+		`
 
 	iterator, err := influxDB.Query(context.Background(), query) // Create iterator from query response
 
@@ -119,12 +119,12 @@ func GetWaterTankLevelbyNodeName(c *gin.Context) {
 
 	defer influxDB.Close()
 
-	query := fmt.Sprintf(`
+	query := `
 		SELECT *
 		FROM "WaterTankLavel"
-		WHERE "nodeName" = '%s' AND "time" >= now() - interval '%s' minutes
+		WHERE "nodeName" = '` + nodeName + `' AND "time" >= now() - interval '` + intervalStr + `' minute
 		ORDER BY time DESC;
-	`, nodeName, intervalStr)
+		`
 
 	iterator, err := influxDB.Query(context.Background(), query) // Create iterator from query response
 
@@ -207,12 +207,12 @@ func GetWaterTankLevelbyDevEUI(c *gin.Context) {
 
 	defer influxDB.Close()
 
-	query := fmt.Sprintf(`
+	query := `
 		SELECT *
 		FROM "WaterTankLavel"
-		WHERE "devEUI" = '%s' AND "time" >= now() - interval '%s' minutes
+		WHERE "devEUI" = '` + devEUI + `' AND "time" >= now() - interval '` + intervalStr + `' minute
 		ORDER BY time DESC;
-	`, devEUI, intervalStr)
+		`
 
 	iterator, err := influxDB.Query(context.Background(), query) // Create iterator from query response
 

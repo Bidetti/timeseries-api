@@ -33,12 +33,12 @@ func GetArtesianWell(c *gin.Context) {
 
 	defer influxDB.Close()
 
-	query := fmt.Sprintf(`
+	query := `
 		SELECT *
 		FROM "ArtesianWell"
-		WHERE "time" >= now() - interval '%s' minutes
+		WHERE "time" >= now() - interval '` + intervalStr + ` minutes'
 		ORDER BY time DESC;
-	`, intervalStr)
+	`
 
 	iterator, err := influxDB.Query(context.Background(), query) // Create iterator from query response
 
@@ -64,7 +64,7 @@ func GetArtesianWell(c *gin.Context) {
 				"rxInfo_longitude_1":           value["rxInfo_longitude_1"],
 				"rxInfo_rssi_0":                value["rxInfo_rssi_0"],
 				"rxInfo_rssi_1":                value["rxInfo_rssi_1"],
-				"rxInfo_dataRate_spreadFactor": value["rxInfo_dataRate_spreadFactor"],
+				"txInfo_dataRate_spreadFactor": value["txInfo_dataRate_spreadFactor"],
 				"txInfo_frequency":             value["txInfo_frequency"],
 			},
 			"name": "ArtesianWell",
@@ -120,12 +120,12 @@ func GetArtesianWellbyNodeName(c *gin.Context) {
 
 	defer influxDB.Close()
 
-	query := fmt.Sprintf(`
+	query := `
 		SELECT *
 		FROM "ArtesianWell"
-		WHERE "nodeName" = '%s' AND "time" >= now() - interval '%s' minutes
+		WHERE "nodeName" = '` + nodeName + `' AND "time" >= now() - interval '` + intervalStr + ` minutes'
 		ORDER BY time DESC;
-	`, nodeName, intervalStr)
+	`
 
 	iterator, err := influxDB.Query(context.Background(), query) // Create iterator from query response
 
@@ -208,12 +208,12 @@ func GetArtesianWellbyDevEUI(c *gin.Context) {
 
 	defer influxDB.Close()
 
-	query := fmt.Sprintf(`
+	query := `
 		SELECT *
 		FROM "ArtesianWell"
-		WHERE "devEUI" = '%s' AND "time" >= now() - interval '%s' minutes
+		WHERE "devEUI" = '` + devEUI + `' AND "time" >= now() - interval '` + intervalStr + ` minutes'
 		ORDER BY time DESC;
-	`, devEUI, intervalStr)
+	`
 
 	iterator, err := influxDB.Query(context.Background(), query) // Create iterator from query response
 	if err != nil {
@@ -239,7 +239,7 @@ func GetArtesianWellbyDevEUI(c *gin.Context) {
 				"rxInfo_longitude_1":           value["rxInfo_longitude_1"],
 				"rxInfo_rssi_0":                value["rxInfo_rssi_0"],
 				"rxInfo_rssi_1":                value["rxInfo_rssi_1"],
-				"rxInfo_dataRate_spreadFactor": value["rxInfo_dataRate_spreadFactor"],
+				"txInfo_dataRate_spreadFactor": value["txInfo_dataRate_spreadFactor"],
 				"txInfo_frequency":             value["txInfo_frequency"],
 			},
 			"name": "ArtesianWell",

@@ -1,1 +1,2 @@
-web: go run main.go
+web: timeseries-api
+    @echo "Deploying timeseries-api"

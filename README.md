@@ -9,3 +9,6 @@ https://smartcampus-k8s.maua.br/api/timeseries/v0.1/smartcampusmaua/SmartLights/
 Get SmartLight by `devEUI`:
 https://smartcampus-k8s.maua.br/api/timeseries/v0.1/smartcampusmaua/SmartLights/deviceId/{devEUI}
 
+Get WaterTankLevel by last 15 minutes:
+
+

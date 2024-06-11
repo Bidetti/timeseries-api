@@ -16,6 +16,7 @@ func main() {
 		api.GET("WaterTankLevel", controller.GetWaterTankLevel)
 		api.GET("WaterTankLevel/deviceName/:nodeName", controller.GetWaterTankLevelbyNodeName)
 		api.GET("WaterTankLevel/deviceId/:devEUI", controller.GetWaterTankLevelbyDevEUI)
+		api.GET("LastWaterTankLevel", controller.GetLatestWaterTankLevels)
 		api.GET("Hidrometer", controller.GetHidrometer)
 		api.GET("Hidrometer/deviceName/:nodeName", controller.GetHidrometerbyNodeName)
 		api.GET("Hidrometer/deviceId/:devEUI", controller.GetHidrometerbyDevEUI)

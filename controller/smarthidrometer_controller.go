@@ -2,11 +2,12 @@ package controller
 
 import (
 	"context"
-	"fmt"
+	"math"
 	"net/http"
 	"strconv"
 
 	"github.com/OpenDataTelemetry/timeseries-api/database"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/gin-gonic/gin"
 )
 
@@ -87,10 +88,27 @@ func GetHidrometer(c *gin.Context) {
 		}
 		objs = append(objs, obj)
 	}
-	fmt.Println(len(objs))
 	if len(objs) == 0 {
 		c.JSON(http.StatusNoContent, gin.H{"message": "No content"})
 		return
+	}
+	if len(objs) >= 2 {
+		first := objs[0]
+		last := objs[len(objs)-1]
+
+		accumulatedLitersFirst := first["fields"].(gin.H)["data_counter"].(float64)
+		timestampFirst := first["timestamp"].(arrow.Timestamp) / 1000000000
+		accumulatedLitersLast := last["fields"].(gin.H)["data_counter"].(float64)
+		timestampLast := last["timestamp"].(arrow.Timestamp) / 1000000000
+
+		timeDifference := timestampLast - timestampFirst
+		litersDifference := accumulatedLitersLast - accumulatedLitersFirst
+
+		waterLeakSecond := float64(litersDifference) / float64(timeDifference)
+		waterLeak := waterLeakSecond * 3600
+		waterLeak = math.Abs(waterLeak)
+
+		c.IndentedJSON(http.StatusOK, gin.H{"waterLeak": waterLeak})
 	}
 	c.IndentedJSON(http.StatusOK, objs)
 }
@@ -173,10 +191,27 @@ func GetHidrometerbyNodeName(c *gin.Context) {
 		}
 		objs = append(objs, obj)
 	}
-	fmt.Println(len(objs))
 	if len(objs) == 0 {
 		c.JSON(http.StatusNoContent, gin.H{"message": "No content"})
 		return
+	}
+	if len(objs) >= 2 {
+		first := objs[0]
+		last := objs[len(objs)-1]
+
+		accumulatedLitersFirst := first["fields"].(gin.H)["data_counter"].(float64)
+		timestampFirst := first["timestamp"].(arrow.Timestamp) / 1000000000
+		accumulatedLitersLast := last["fields"].(gin.H)["data_counter"].(float64)
+		timestampLast := last["timestamp"].(arrow.Timestamp) / 1000000000
+
+		timeDifference := timestampLast - timestampFirst
+		litersDifference := accumulatedLitersLast - accumulatedLitersFirst
+
+		waterLeakSecond := float64(litersDifference) / float64(timeDifference)
+		waterLeak := waterLeakSecond * 3600
+		waterLeak = math.Abs(waterLeak)
+
+		c.IndentedJSON(http.StatusOK, gin.H{"waterLeak": waterLeak})
 	}
 	c.IndentedJSON(http.StatusOK, objs)
 }
@@ -259,10 +294,27 @@ func GetHidrometerbyDevEUI(c *gin.Context) {
 		}
 		objs = append(objs, obj)
 	}
-	fmt.Println(len(objs))
 	if len(objs) == 0 {
 		c.JSON(http.StatusNoContent, gin.H{"message": "No content"})
 		return
+	}
+	if len(objs) >= 2 {
+		first := objs[0]
+		last := objs[len(objs)-1]
+
+		accumulatedLitersFirst := first["fields"].(gin.H)["data_counter"].(float64)
+		timestampFirst := first["timestamp"].(arrow.Timestamp) / 1000000000
+		accumulatedLitersLast := last["fields"].(gin.H)["data_counter"].(float64)
+		timestampLast := last["timestamp"].(arrow.Timestamp) / 1000000000
+
+		timeDifference := timestampLast - timestampFirst
+		litersDifference := accumulatedLitersLast - accumulatedLitersFirst
+
+		waterLeakSecond := float64(litersDifference) / float64(timeDifference)
+		waterLeak := waterLeakSecond * 3600
+		waterLeak = math.Abs(waterLeak)
+
+		c.IndentedJSON(http.StatusOK, gin.H{"waterLeak": waterLeak})
 	}
 	c.IndentedJSON(http.StatusOK, objs)
 }

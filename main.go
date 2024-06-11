@@ -14,6 +14,7 @@ func main() {
 		api.GET("SmartLights", controller.GetSmartLights)
 		api.GET("SmartLights/deviceName/:nodeName", controller.GetSmartLightbyNodeName)
 		api.GET("SmartLights/deviceId/:devEUI", controller.GetSmartLightbyDevEUI)
+		api.GET("LastWaterTankLevel", controller.GetLatestWaterTankLevels)
 		api.GET("WaterTankLevel", controller.GetWaterTankLevel)
 		api.GET("WaterTankLevel/deviceName/:nodeName", controller.GetWaterTankLevelbyNodeName)
 		api.GET("WaterTankLevel/deviceId/:devEUI", controller.GetWaterTankLevelbyDevEUI)

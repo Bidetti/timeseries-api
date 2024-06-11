@@ -48,10 +48,12 @@ func GetWaterTankLevel(c *gin.Context) {
 
 	for iterator.Next() { // Iterate over query response
 		value := iterator.Value() // Value of the current row
+		data_percentage := ((4000 - value["data_distance"].(float64)) / 4000) * 100
 		obj := gin.H{
 			"fields": gin.H{
 				"data_boardVoltage":            value["data_boardVoltage"],
 				"data_distance":                value["data_distance"],
+				"data_percentage":              data_percentage,
 				"fCnt":                         value["fCnt"],
 				"rxInfo_altitude_0":            value["rxInfo_altitude_0"],
 				"rxInfo_altitude_1":            value["rxInfo_altitude_1"],
@@ -134,10 +136,12 @@ func GetWaterTankLevelbyNodeName(c *gin.Context) {
 
 	for iterator.Next() {
 		value := iterator.Value()
+		data_percentage := ((4000 - value["data_distance"].(float64)) / 4000) * 100
 		obj := gin.H{
 			"fields": gin.H{
 				"data_boardVoltage":            value["data_boardVoltage"],
 				"data_distance":                value["data_distance"],
+				"data_percentage":              data_percentage,
 				"fCnt":                         value["fCnt"],
 				"rxInfo_altitude_0":            value["rxInfo_altitude_0"],
 				"rxInfo_altitude_1":            value["rxInfo_altitude_1"],
@@ -222,10 +226,12 @@ func GetWaterTankLevelbyDevEUI(c *gin.Context) {
 
 	for iterator.Next() { // Iterate over query response
 		value := iterator.Value() // Value of the current row
+		data_percentage := ((4000 - value["data_distance"].(float64)) / 4000) * 100
 		obj := gin.H{
 			"fields": gin.H{
 				"data_boardVoltage":            value["data_boardVoltage"],
 				"data_distance":                value["data_distance"],
+				"data_percentage":              data_percentage,
 				"fCnt":                         value["fCnt"],
 				"rxInfo_altitude_0":            value["rxInfo_altitude_0"],
 				"rxInfo_altitude_1":            value["rxInfo_altitude_1"],
@@ -269,4 +275,45 @@ func GetWaterTankLevelbyDevEUI(c *gin.Context) {
 		return
 	}
 	c.IndentedJSON(http.StatusOK, objs)
+}
+
+func GetLatestWaterTankLevels(c *gin.Context) {
+	var objs = []gin.H{}
+	influxDB, err := database.ConnectToDB()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer influxDB.Close()
+
+	for i := 1; i <= 8; i++ {
+		tableName := fmt.Sprintf("WaterTankLavel_%d", i)
+		query := `
+            SELECT "data_distance", "nodeName"
+            FROM "WaterTankLavel"
+			WHERE "nodeName" = '` + tableName + `'
+            ORDER BY time DESC
+            LIMIT 1;
+            `
+		iterator, err := influxDB.Query(context.Background(), query)
+		if err != nil {
+			panic(err)
+		}
+
+		if iterator.Next() { // Iterate over query response
+			value := iterator.Value() // Value of the current ro
+			data_distance := value["data_distance"].(float64)
+			fake_percentage := ((4000 - data_distance) / 4000) * 100
+			obj := gin.H{
+				"i":               i,
+				"data_distance":   value["data_distance"],
+				"data_percentage": int(fake_percentage),
+				"nodeName":        value["nodeName"],
+				"name":            "Tanque de Água - " + strconv.Itoa(i),
+			}
+			objs = append(objs, obj)
+		}
+	}
+
+	c.JSON(http.StatusOK, objs)
 }

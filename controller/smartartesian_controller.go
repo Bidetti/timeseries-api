@@ -10,6 +10,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Get data from the ArtesianWell table
+// @Description Retrieves data from the ArtesianWell database table.
+// @ID get-artesian-well
+// @Accept  json
+// @Produce  json
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /ArtesianWell [get]
 func GetArtesianWell(c *gin.Context) {
 	intervalStr := c.DefaultQuery("interval", "15")
 
@@ -96,6 +106,17 @@ func GetArtesianWell(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, objs)
 }
 
+// @Summary Get data from the ArtesianWell table for a specific node
+// @Description Retrieves data from the ArtesianWell database table for a specific node.
+// @ID get-artesian-well-by-node-name
+// @Accept  json
+// @Produce  json
+// @Param nodeName path string true "Node Name"
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /ArtesianWell/deviceName/{nodeName} [get]
 func GetArtesianWellbyNodeName(c *gin.Context) {
 	nodeName := c.Param("nodeName")
 	intervalStr := c.DefaultQuery("interval", "15")
@@ -184,6 +205,17 @@ func GetArtesianWellbyNodeName(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, objs)
 }
 
+// @Summary Get data from the ArtesianWell table for a specific device
+// @Description Retrieves data from the ArtesianWell database table for a specific device.
+// @ID get-artesian-well-by-dev-eui
+// @Accept  json
+// @Produce  json
+// @Param devEUI path string true "Device EUI"
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /ArtesianWell/deviceId/{devEUI} [get]
 func GetArtesianWellbyDevEUI(c *gin.Context) {
 	devEUI := c.Param("devEUI")
 	intervalStr := c.DefaultQuery("interval", "15")

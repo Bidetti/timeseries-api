@@ -12,6 +12,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Get data from Hidrometer table
+// @Description Retrieves data from the Hidrometer database table.
+// @ID get-hidrometer
+// @Accept  json
+// @Produce  json
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /Hidrometer [get]
 func GetHidrometer(c *gin.Context) {
 	intervalStr := c.DefaultQuery("interval", "15")
 
@@ -115,6 +125,17 @@ func GetHidrometer(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, objs)
 }
 
+// @Summary Get data from the Hidrometer table for a specific node
+// @Description Retrieves data from the Hidrometer database table for a specific node.
+// @ID get-hidrometer-by-node-name
+// @Accept  json
+// @Produce  json
+// @Param nodeName path string true "Node Name"
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /Hidrometer/nodeName/{nodeName} [get]
 func GetHidrometerbyNodeName(c *gin.Context) {
 	nodeName := c.Param("nodeName")
 	intervalStr := c.DefaultQuery("interval", "15")
@@ -219,6 +240,17 @@ func GetHidrometerbyNodeName(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, objs)
 }
 
+// @Summary Get data from the Hidrometer table for a specific device
+// @Description Retrieves data from the Hidrometer database table for a specific device.
+// @ID get-hidrometer-by-dev-eui
+// @Accept  json
+// @Produce  json
+// @Param devEUI path string true "Device EUI"
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /Hidrometer/deviceId/{devEUI} [get]
 func GetHidrometerbyDevEUI(c *gin.Context) {
 	devEUI := c.Param("devEUI")
 	intervalStr := c.DefaultQuery("interval", "15")

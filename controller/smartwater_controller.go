@@ -10,6 +10,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Get data from the WaterTankLevel table
+// @Description Retrieves data from the WaterTankLevel database table.
+// @ID get-watertanklevel
+// @Accept  json
+// @Produce  json
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /WaterTankLevel [get]
 func GetWaterTankLevel(c *gin.Context) {
 	intervalStr := c.DefaultQuery("interval", "15")
 
@@ -97,6 +107,17 @@ func GetWaterTankLevel(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, objs)
 }
 
+// @Summary Get data from the WaterTankLevel table for a specific node
+// @Description Retrieves data from the WaterTankLevel database table for a specific node.
+// @ID get-watertanklevel-by-node-name
+// @Accept  json
+// @Produce  json
+// @Param nodeName path string true "Node Name"
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /WaterTankLevel/deviceName/{nodeName} [get]
 func GetWaterTankLevelbyNodeName(c *gin.Context) {
 	nodeName := c.Param("nodeName") // Parameter to query
 	intervalStr := c.DefaultQuery("interval", "15")
@@ -187,6 +208,17 @@ func GetWaterTankLevelbyNodeName(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, objs)
 }
 
+// @Summary Get data from the WaterTankLevel table for a specific device
+// @Description Retrieves data from the WaterTankLevel database table for a specific device.
+// @ID get-watertanklevel-by-dev-eui
+// @Accept  json
+// @Produce  json
+// @Param devEUI path string true "Device EUI"
+// @Param interval query int false "Interval" default(15)
+// @Success 200 {array} map[string]interface{}
+// @Failure 400 {object} map[string]string "Invalid interval value"
+// @Failure 400 {object} map[string]string "Interval must be less than 400"
+// @Router /WaterTankLevel/deviceId/{devEUI} [get]
 func GetWaterTankLevelbyDevEUI(c *gin.Context) {
 	devEUI := c.Param("devEUI")
 	intervalStr := c.DefaultQuery("interval", "15")
@@ -277,6 +309,14 @@ func GetWaterTankLevelbyDevEUI(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, objs)
 }
 
+// @Summary Get latest water tank levels
+// @Description Retrieves the latest water tank levels from the database.
+// @ID get-latest-water-tank-levels
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} map[string]interface{} "Successful operation"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /LastWaterTankLevel [get]
 func GetLatestWaterTankLevels(c *gin.Context) {
 	var objs = []gin.H{}
 	influxDB, err := database.ConnectToDB()

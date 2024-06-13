@@ -4,11 +4,13 @@ import (
 	"os"
 
 	"github.com/OpenDataTelemetry/timeseries-api/controller"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	r := gin.Default() // Create a new gin router instance
+	r := gin.Default()
+	r.Use(cors.Default())
 	api := r.Group("/api/timeseries/v0.2/smartcampusmaua")
 	{
 		api.GET("SmartLights", controller.GetSmartLights)
